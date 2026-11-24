@@ -9,10 +9,20 @@
 radius = 0.35
 height = 1.8
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_hat"]
-top_radius = 0.03
-bottom_radius = 0.52
-height = 0.16
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ponytail"]
+radius = 0.06
+height = 0.48
+
+[sub_resource type="TorusMesh" id="TorusMesh_ribbon"]
+inner_radius = 0.04
+outer_radius = 0.075
+
+[sub_resource type="BoxMesh" id="BoxMesh_bangs"]
+size = Vector3(0.035, 0.18, 0.035)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tassel"]
+radius = 0.015
+height = 0.22
 
 [sub_resource type="SphereMesh" id="SphereMesh_head"]
 radius = 0.15
@@ -43,21 +53,29 @@ height = 0.48
 radius = 0.09
 height = 0.62
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cloth_autumn"]
+albedo_color = Color(0.55, 0.15, 0.12, 1)
+roughness = 0.85
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cloth_black"]
-albedo_color = Color(0.12, 0.13, 0.15, 1)
+albedo_color = Color(0.1, 0.1, 0.12, 1)
 roughness = 0.85
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_armor_iron"]
-albedo_color = Color(0.25, 0.28, 0.32, 1)
-metallic = 0.85
-roughness = 0.35
+albedo_color = Color(0.22, 0.25, 0.28, 1)
+metallic = 0.88
+roughness = 0.32
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hat_straw"]
-albedo_color = Color(0.28, 0.24, 0.18, 1)
-roughness = 0.9
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_ribbon"]
+albedo_color = Color(0.85, 0.15, 0.12, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hair_black"]
+albedo_color = Color(0.08, 0.08, 0.09, 1)
+roughness = 0.55
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_trim"]
-albedo_color = Color(0.85, 0.68, 0.25, 1)
+albedo_color = Color(0.82, 0.65, 0.25, 1)
 metallic = 0.9
 roughness = 0.3
 
@@ -130,10 +148,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
 mesh = SubResource("SphereMesh_head")
 surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
 
-[node name="HatMesh" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
-transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0.14, -0.02)
-mesh = SubResource("CylinderMesh_hat")
-surface_material_override/0 = SubResource("StandardMaterial3D_hat_straw")
+[node name="Ponytail" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
+transform = Transform3D(1, 0, 0, 0, 0.819152, -0.573576, 0, 0.573576, 0.819152, 0, 0.12, 0.22)
+mesh = SubResource("CapsuleMesh_ponytail")
+surface_material_override/0 = SubResource("StandardMaterial3D_hair_black")
+
+[node name="HairRibbon" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
+transform = Transform3D(1, 0, 0, 0, 0.819152, -0.573576, 0, 0.573576, 0.819152, 0, 0.14, 0.1)
+mesh = SubResource("TorusMesh_ribbon")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_ribbon")
+
+[node name="BangsL" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -0.08, -0.04, -0.12)
+mesh = SubResource("BoxMesh_bangs")
+surface_material_override/0 = SubResource("StandardMaterial3D_hair_black")
+
+[node name="BangsR" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 0.08, -0.04, -0.12)
+mesh = SubResource("BoxMesh_bangs")
+surface_material_override/0 = SubResource("StandardMaterial3D_hair_black")
 
 [node name="MaskMesh" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.06, -0.06)
@@ -146,7 +179,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 [node name="ChestArmor" type="MeshInstance3D" parent="VisualModel/TorsoGroup"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
 mesh = SubResource("BoxMesh_chest")
-surface_material_override/0 = SubResource("StandardMaterial3D_armor_iron")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_autumn")
 
 [node name="WaistBelt" type="MeshInstance3D" parent="VisualModel/TorsoGroup"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0)
@@ -156,14 +189,14 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gold_trim")
 [node name="RobeSkirt" type="MeshInstance3D" parent="VisualModel/TorsoGroup"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0)
 mesh = SubResource("CylinderMesh_skirt")
-surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_autumn")
 
 [node name="LimbsGroup" type="Node3D" parent="VisualModel"]
 
 [node name="ShoulderL" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
 transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -0.26, 1.25, 0)
 mesh = SubResource("BoxMesh_shoulder")
-surface_material_override/0 = SubResource("StandardMaterial3D_armor_iron")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_autumn")
 
 [node name="ShoulderR" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
 transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 0.26, 1.25, 0)
@@ -225,6 +258,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_hilt_wrap")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.12)
 mesh = SubResource("SphereMesh_pommel")
 surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
+
+[node name="TasselMesh" type="MeshInstance3D" parent="WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, -0.08, 0.22)
+mesh = SubResource("CapsuleMesh_tassel")
+surface_material_override/0 = SubResource("StandardMaterial3D_red_ribbon")
 
 [node name="Hitbox3D" type="Area3D" parent="WeaponPivot" node_paths=PackedStringArray("debug_mesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.55)

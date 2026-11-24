@@ -40,26 +40,26 @@ func _ready() -> void:
 	base_weapon_rot = weapon_pivot.rotation
 	_setup_faction_styling()
 
-## 根据角色阵营（P1 剑客 vs P2 木桩）定制服饰与冷兵器 PBR 材质
+## 根据角色阵营（P1 秋红叶 vs P2 试炼木桩）定制服饰与冷兵器 PBR 材质
 func _setup_faction_styling() -> void:
 	if not visual_model:
 		return
 
 	if is_bot or fighter_id == 2:
-		# P2 假人木桩：赤赭古铜铠甲 + 暗红武袍 + 淬火赤铜刃
+		# P2 假人木桩：素灰武者服 + 试炼青铜铠 + 淬火古青铜直刃
 		var bot_cloth = StandardMaterial3D.new()
-		bot_cloth.albedo_color = Color(0.28, 0.15, 0.12, 1) # 暗红武袍
+		bot_cloth.albedo_color = Color(0.22, 0.24, 0.26, 1) # 灰黑劲装
 		bot_cloth.roughness = 0.85
 
 		var bot_armor = StandardMaterial3D.new()
-		bot_armor.albedo_color = Color(0.55, 0.28, 0.22, 1) # 赤赭铜铠
-		bot_armor.metallic = 0.85
+		bot_armor.albedo_color = Color(0.48, 0.42, 0.28, 1) # 古青铜铠
+		bot_armor.metallic = 0.88
 		bot_armor.roughness = 0.35
 
 		var bot_blade = StandardMaterial3D.new()
-		bot_blade.albedo_color = Color(0.85, 0.58, 0.48, 1) # 淬火赤红刃
+		bot_blade.albedo_color = Color(0.72, 0.62, 0.45, 1) # 古铜冷刃
 		bot_blade.metallic = 0.95
-		bot_blade.roughness = 0.18
+		bot_blade.roughness = 0.2
 
 		# 替换头罩、战袍、护肩与胸铠材质
 		var head_mesh = visual_model.get_node_or_null("HeadGroup/HeadMesh") as MeshInstance3D
@@ -71,11 +71,30 @@ func _setup_faction_styling() -> void:
 		var chest_mesh = visual_model.get_node_or_null("TorsoGroup/ChestArmor") as MeshInstance3D
 		if chest_mesh: chest_mesh.material_override = bot_armor
 		var sh_l = visual_model.get_node_or_null("LimbsGroup/ShoulderL") as MeshInstance3D
-		if sh_l: sh_l.material_override = bot_armor
+		if sh_l: sh_l.material_override = bot_cloth
 		var sh_r = visual_model.get_node_or_null("LimbsGroup/ShoulderR") as MeshInstance3D
 		if sh_r: sh_r.material_override = bot_armor
 		var blade = weapon_pivot.get_node_or_null("BladeMesh") as MeshInstance3D
 		if blade: blade.material_override = bot_blade
+	else:
+		# P1 玩家：正统《刀剑2》“秋红叶”神韵（枫红交领战袍 + 右肩玄铁铠 + 寒枫唐刀）
+		var qiu_cloth = StandardMaterial3D.new()
+		qiu_cloth.albedo_color = Color(0.58, 0.14, 0.12, 1) # 经典枫红
+		qiu_cloth.roughness = 0.82
+
+		var qiu_armor = StandardMaterial3D.new()
+		qiu_armor.albedo_color = Color(0.22, 0.25, 0.28, 1) # 冷钢玄铁
+		qiu_armor.metallic = 0.9
+		qiu_armor.roughness = 0.28
+
+		var chest_mesh = visual_model.get_node_or_null("TorsoGroup/ChestArmor") as MeshInstance3D
+		if chest_mesh: chest_mesh.material_override = qiu_cloth
+		var skirt_mesh = visual_model.get_node_or_null("TorsoGroup/RobeSkirt") as MeshInstance3D
+		if skirt_mesh: skirt_mesh.material_override = qiu_cloth
+		var sh_l = visual_model.get_node_or_null("LimbsGroup/ShoulderL") as MeshInstance3D
+		if sh_l: sh_l.material_override = qiu_cloth
+		var sh_r = visual_model.get_node_or_null("LimbsGroup/ShoulderR") as MeshInstance3D
+		if sh_r: sh_r.material_override = qiu_armor
 
 func _physics_process(delta: float) -> void:
 	# 1. 物理重力计算
@@ -216,7 +235,7 @@ func _update_debug_ui() -> void:
 
 	debug_label.text = "[角色 %d - %s]\n状态: %s | 架势: %s\n姿态: %s\nHP: %d/%d | 体力: %d/%d" % [
 		fighter_id,
-		"玩家" if not is_bot else "训练木桩",
+		"秋红叶(玩家)" if not is_bot else "试炼木桩",
 		state_name,
 		dir_name,
 		stance_name,
