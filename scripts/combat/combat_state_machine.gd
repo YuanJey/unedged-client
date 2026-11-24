@@ -29,7 +29,6 @@ var parry_window_frames: int = 11
 # 姿态加成配置
 var current_damage_mult: float = 1.0
 var current_speed_mult: float = 1.0
-var has_hyper_armor: bool = false
 
 func _ready() -> void:
 	load_weapon_configuration("td_standard_01")
@@ -68,15 +67,12 @@ func _apply_stance_modifiers() -> void:
 		CombatConstants.GripStance.ONE_HAND_R:
 			current_speed_mult = 1.05
 			current_damage_mult = 1.0
-			has_hyper_armor = false
 		CombatConstants.GripStance.ONE_HAND_L:
 			current_speed_mult = 1.05
 			current_damage_mult = 1.0
-			has_hyper_armor = false
 		CombatConstants.GripStance.TWO_HAND:
 			current_speed_mult = 0.92
 			current_damage_mult = 1.2
-			has_hyper_armor = true
 
 ## 每逻辑帧驱动（60Hz Fixed Process）
 func process_combat_frame(input_mask: int, aim_dir: int) -> void:

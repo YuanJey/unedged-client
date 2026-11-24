@@ -204,7 +204,7 @@ func _update_debug_ui() -> void:
 	var stance_name = "右手单持"
 	match state_machine.current_stance:
 		CombatConstants.GripStance.ONE_HAND_L: stance_name = "左手换手"
-		CombatConstants.GripStance.TWO_HAND: stance_name = "双手持握(霸体)"
+		CombatConstants.GripStance.TWO_HAND: stance_name = "双手持握(双手重势)"
 
 	var state_name = "待机"
 	match state_machine.current_state:
