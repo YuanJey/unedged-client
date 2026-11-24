@@ -1,6 +1,8 @@
 class_name Hurtbox3D
 extends Area3D
 
+const CombatConstants = preload("res://scripts/combat/combat_constants.gd")
+
 ## 《无锋》（Unedged）躯干受击盒组件
 ## 监听进入的 Hitbox3D，联动 CombatStateMachine 进行受击、格挡与精准弹反裁决
 

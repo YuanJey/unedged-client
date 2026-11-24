@@ -1,6 +1,8 @@
 class_name FighterController
 extends CharacterBody3D
 
+const CombatConstants = preload("res://scripts/combat/combat_constants.gd")
+
 ## 《无锋》（Unedged）3D 角色运动、输入打包与战斗实体控制器
 ## 驱动 60Hz 逻辑帧输入、三向攻防变换与武器判定盒生命周期
 

@@ -1,6 +1,8 @@
 class_name CombatStateMachine
 extends Node
 
+const CombatConstants = preload("res://scripts/combat/combat_constants.gd")
+
 ## 《无锋》（Unedged）核心战斗状态机
 ## 负责管理三向攻防判定、弹反时间窗、握持姿态切换及逻辑帧驱动
 

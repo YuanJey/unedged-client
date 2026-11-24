@@ -1,6 +1,8 @@
 class_name Hitbox3D
 extends Area3D
 
+const CombatConstants = preload("res://scripts/combat/combat_constants.gd")
+
 ## 《无锋》（Unedged）武器攻击判定盒组件
 ## 挂载于刀身刃部，仅在状态机进入有效判定帧（ATTACK_ACTIVE）时激活
 
