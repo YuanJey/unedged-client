@@ -50,3 +50,4 @@ enum HitResolution {
 	GUARD_BROKEN,    # 破防命中（直接打破防御态）
 	DODGED           # 闪避无敌帧规避
 }
+

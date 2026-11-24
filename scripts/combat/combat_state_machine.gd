@@ -149,3 +149,4 @@ func _transition_to(new_state: int, duration_frames: int) -> void:
 	frame_counter = 0
 	state_duration_frames = duration_frames
 	state_changed.emit(old_state, new_state)
+

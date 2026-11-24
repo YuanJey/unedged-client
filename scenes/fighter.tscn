@@ -1,0 +1,117 @@
+[gd_scene load_steps=12 format=3 uid="uid://c6fghfighter001"]
+
+[ext_resource type="Script" path="res://scripts/character/fighter_controller.gd" id="1_fighter"]
+[ext_resource type="Script" path="res://scripts/combat/combat_state_machine.gd" id="2_csm"]
+[ext_resource type="Script" path="res://scripts/combat/hurtbox_3d.gd" id="3_hurtbox"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox_3d.gd" id="4_hitbox"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+albedo_color = Color(0.2, 0.25, 0.3, 0.8)
+roughness = 0.4
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurtbox"]
+radius = 0.42
+height = 1.85
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hurtbox"]
+radius = 0.42
+height = 1.85
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hitbox"]
+size = Vector3(0.22, 0.25, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hitbox"]
+size = Vector3(0.22, 0.25, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_blade"]
+size = Vector3(0.05, 0.08, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_steel"]
+albedo_color = Color(0.85, 0.88, 0.92, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="PrismMesh" id="PrismMesh_indicator"]
+size = Vector3(0.25, 0.35, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_indicator"]
+albedo_color = Color(1, 0.8, 0.2, 0.9)
+emission_enabled = true
+emission = Color(1, 0.7, 0.1, 1)
+
+[node name="Fighter" type="CharacterBody3D"]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_fighter")
+
+[node name="BodyCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_body")
+
+[node name="Hurtbox3D" type="Area3D" parent="." node_paths=PackedStringArray("debug_mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_hurtbox")
+debug_mesh = NodePath("HurtboxMesh")
+
+[node name="HurtboxCollision" type="CollisionShape3D" parent="Hurtbox3D"]
+shape = SubResource("CapsuleShape3D_hurtbox")
+
+[node name="HurtboxMesh" type="MeshInstance3D" parent="Hurtbox3D"]
+mesh = SubResource("CapsuleMesh_hurtbox")
+
+[node name="WeaponPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0.9, -0.2)
+
+[node name="BladeMesh" type="MeshInstance3D" parent="WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.55)
+mesh = SubResource("BoxMesh_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_steel")
+
+[node name="Hitbox3D" type="Area3D" parent="WeaponPivot" node_paths=PackedStringArray("debug_mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.55)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("4_hitbox")
+debug_mesh = NodePath("HitboxMesh")
+
+[node name="HitboxCollision" type="CollisionShape3D" parent="WeaponPivot/Hitbox3D"]
+shape = SubResource("BoxShape3D_hitbox")
+
+[node name="HitboxMesh" type="MeshInstance3D" parent="WeaponPivot/Hitbox3D"]
+visible = false
+mesh = SubResource("BoxMesh_hitbox")
+
+[node name="StanceIndicator" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, -0.3)
+
+[node name="IndicatorMesh" type="MeshInstance3D" parent="StanceIndicator"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PrismMesh_indicator")
+surface_material_override/0 = SubResource("StandardMaterial3D_indicator")
+
+[node name="CombatStateMachine" type="Node" parent="."]
+script = ExtResource("2_csm")
+
+[node name="DebugLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+billboard = 1
+text = "[角色状态载入中...]"
+font_size = 22
+outline_size = 6

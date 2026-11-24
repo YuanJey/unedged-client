@@ -9,6 +9,7 @@ config_version=5
 config/name="Unedged"
 config/description="《无锋》（Unedged）硬核冷兵器见招拆招竞技游戏客户端"
 config/version="0.1.0"
+run/main_scene="res://scenes/arena.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 
 [display]
@@ -91,3 +92,4 @@ dir_right={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194321,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
+
