@@ -9,13 +9,57 @@
 radius = 0.35
 height = 1.8
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
-radius = 0.35
-height = 1.8
+[sub_resource type="CylinderMesh" id="CylinderMesh_hat"]
+top_radius = 0.03
+bottom_radius = 0.52
+height = 0.16
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
-albedo_color = Color(0.2, 0.25, 0.3, 0.8)
-roughness = 0.4
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+radius = 0.15
+height = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_mask"]
+size = Vector3(0.2, 0.14, 0.22)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chest"]
+size = Vector3(0.44, 0.46, 0.28)
+
+[sub_resource type="BoxMesh" id="BoxMesh_waist"]
+size = Vector3(0.4, 0.12, 0.26)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_skirt"]
+top_radius = 0.22
+bottom_radius = 0.34
+height = 0.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_shoulder"]
+size = Vector3(0.14, 0.12, 0.22)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_arm"]
+radius = 0.07
+height = 0.48
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_leg"]
+radius = 0.09
+height = 0.62
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cloth_black"]
+albedo_color = Color(0.12, 0.13, 0.15, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_armor_iron"]
+albedo_color = Color(0.25, 0.28, 0.32, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hat_straw"]
+albedo_color = Color(0.28, 0.24, 0.18, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold_trim"]
+albedo_color = Color(0.85, 0.68, 0.25, 1)
+metallic = 0.9
+roughness = 0.3
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurtbox"]
 radius = 0.42
@@ -32,12 +76,33 @@ size = Vector3(0.22, 0.25, 1.2)
 size = Vector3(0.22, 0.25, 1.2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_blade"]
-size = Vector3(0.05, 0.08, 1.1)
+size = Vector3(0.025, 0.05, 0.95)
+
+[sub_resource type="BoxMesh" id="BoxMesh_guard"]
+size = Vector3(0.12, 0.08, 0.03)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hilt"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.26
+
+[sub_resource type="SphereMesh" id="SphereMesh_pommel"]
+radius = 0.035
+height = 0.07
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bronze"]
+albedo_color = Color(0.72, 0.58, 0.35, 1)
+metallic = 0.9
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hilt_wrap"]
+albedo_color = Color(0.25, 0.12, 0.12, 1)
+roughness = 0.85
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_steel"]
-albedo_color = Color(0.85, 0.88, 0.92, 1)
-metallic = 0.9
-roughness = 0.2
+albedo_color = Color(0.92, 0.94, 0.98, 1)
+metallic = 0.95
+roughness = 0.15
 
 [sub_resource type="PrismMesh" id="PrismMesh_indicator"]
 size = Vector3(0.25, 0.35, 0.08)
@@ -56,10 +121,74 @@ script = ExtResource("1_fighter")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_body")
 
-[node name="BodyMesh" type="MeshInstance3D" parent="."]
+[node name="VisualModel" type="Node3D" parent="."]
+
+[node name="HeadGroup" type="Node3D" parent="VisualModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+
+[node name="HeadMesh" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
+
+[node name="HatMesh" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0.14, -0.02)
+mesh = SubResource("CylinderMesh_hat")
+surface_material_override/0 = SubResource("StandardMaterial3D_hat_straw")
+
+[node name="MaskMesh" type="MeshInstance3D" parent="VisualModel/HeadGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.06, -0.06)
+mesh = SubResource("BoxMesh_mask")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
+
+[node name="TorsoGroup" type="Node3D" parent="VisualModel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("CapsuleMesh_body")
-surface_material_override/0 = SubResource("StandardMaterial3D_body")
+
+[node name="ChestArmor" type="MeshInstance3D" parent="VisualModel/TorsoGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("BoxMesh_chest")
+surface_material_override/0 = SubResource("StandardMaterial3D_armor_iron")
+
+[node name="WaistBelt" type="MeshInstance3D" parent="VisualModel/TorsoGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0)
+mesh = SubResource("BoxMesh_waist")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold_trim")
+
+[node name="RobeSkirt" type="MeshInstance3D" parent="VisualModel/TorsoGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0)
+mesh = SubResource("CylinderMesh_skirt")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
+
+[node name="LimbsGroup" type="Node3D" parent="VisualModel"]
+
+[node name="ShoulderL" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -0.26, 1.25, 0)
+mesh = SubResource("BoxMesh_shoulder")
+surface_material_override/0 = SubResource("StandardMaterial3D_armor_iron")
+
+[node name="ShoulderR" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 0.26, 1.25, 0)
+mesh = SubResource("BoxMesh_shoulder")
+surface_material_override/0 = SubResource("StandardMaterial3D_armor_iron")
+
+[node name="ArmL" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28, 0.95, 0)
+mesh = SubResource("CapsuleMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
+
+[node name="ArmR" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0.95, 0)
+mesh = SubResource("CapsuleMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
+
+[node name="LegL" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.32, 0)
+mesh = SubResource("CapsuleMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
+
+[node name="LegR" type="MeshInstance3D" parent="VisualModel/LimbsGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.32, 0)
+mesh = SubResource("CapsuleMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_cloth_black")
 
 [node name="Hurtbox3D" type="Area3D" parent="." node_paths=PackedStringArray("debug_mesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -78,9 +207,24 @@ mesh = SubResource("CapsuleMesh_hurtbox")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0.9, -0.2)
 
 [node name="BladeMesh" type="MeshInstance3D" parent="WeaponPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.62)
 mesh = SubResource("BoxMesh_blade")
 surface_material_override/0 = SubResource("StandardMaterial3D_steel")
+
+[node name="GuardMesh" type="MeshInstance3D" parent="WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15)
+mesh = SubResource("BoxMesh_guard")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
+
+[node name="HiltMesh" type="MeshInstance3D" parent="WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.02)
+mesh = SubResource("CylinderMesh_hilt")
+surface_material_override/0 = SubResource("StandardMaterial3D_hilt_wrap")
+
+[node name="PommelMesh" type="MeshInstance3D" parent="WeaponPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.12)
+mesh = SubResource("SphereMesh_pommel")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
 
 [node name="Hitbox3D" type="Area3D" parent="WeaponPivot" node_paths=PackedStringArray("debug_mesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.55)

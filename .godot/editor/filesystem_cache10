@@ -1,0 +1,17 @@
+78098b89c88a74ebe8c20117b8754620
+::res://::1795525659
+README.md::TextFile::-1::1795443656::0::1::::<><><>0<>0<><>::
+::res://assets/::1795445211
+::res://assets/configs/::1795445211
+weapons.json::JSON::-1::1795445211::0::1::::<><><>0<>0<><>::
+::res://scenes/::1795524473
+arena.tscn::PackedScene::4808201891045932216::1795524473::0::1::::<><><>0<>0<><>::uid://7qi37x5wgs77::::res://scenes/fighter.tscn
+fighter.tscn::PackedScene::2279610496323887544::1795524454::0::1::::<><><>0<>0<><>::res://scripts/character/fighter_controller.gd<>res://scripts/combat/combat_state_machine.gd<>res://scripts/combat/hurtbox_3d.gd<>res://scripts/combat/hitbox_3d.gd
+::res://scripts/::1795524435
+::res://scripts/character/::1795524435
+fighter_controller.gd::GDScript::3909766400642429906::1795525351::0::1::::FighterController<>CharacterBody3D<><>0<>0<><>::
+::res://scripts/combat/::1795524409
+combat_constants.gd::GDScript::5916181335154643015::1795445360::0::1::::CombatConstants<>RefCounted<><>0<>0<><>::
+combat_state_machine.gd::GDScript::4630688717847663639::1795525351::0::1::::CombatStateMachine<>Node<><>0<>0<><>::
+hitbox_3d.gd::GDScript::7130259541265177537::1795525333::0::1::::Hitbox3D<>Area3D<><>0<>0<><>::
+hurtbox_3d.gd::GDScript::8632827315249978735::1795525333::0::1::::Hurtbox3D<>Area3D<><>0<>0<><>::

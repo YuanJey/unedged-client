@@ -16,6 +16,7 @@ const CombatConstants = preload("res://scripts/combat/combat_constants.gd")
 @onready var weapon_pivot: Node3D = $WeaponPivot
 @onready var debug_label: Label3D = $DebugLabel
 @onready var stance_indicator: Node3D = $StanceIndicator
+@onready var visual_model: Node3D = $VisualModel
 
 # 重力加速度
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity", 9.8)
@@ -37,6 +38,44 @@ func _ready() -> void:
 	state_machine.state_changed.connect(_on_state_changed)
 	state_machine.parry_triggered.connect(_on_parry_triggered)
 	base_weapon_rot = weapon_pivot.rotation
+	_setup_faction_styling()
+
+## 根据角色阵营（P1 剑客 vs P2 木桩）定制服饰与冷兵器 PBR 材质
+func _setup_faction_styling() -> void:
+	if not visual_model:
+		return
+
+	if is_bot or fighter_id == 2:
+		# P2 假人木桩：赤赭古铜铠甲 + 暗红武袍 + 淬火赤铜刃
+		var bot_cloth = StandardMaterial3D.new()
+		bot_cloth.albedo_color = Color(0.28, 0.15, 0.12, 1) # 暗红武袍
+		bot_cloth.roughness = 0.85
+
+		var bot_armor = StandardMaterial3D.new()
+		bot_armor.albedo_color = Color(0.55, 0.28, 0.22, 1) # 赤赭铜铠
+		bot_armor.metallic = 0.85
+		bot_armor.roughness = 0.35
+
+		var bot_blade = StandardMaterial3D.new()
+		bot_blade.albedo_color = Color(0.85, 0.58, 0.48, 1) # 淬火赤红刃
+		bot_blade.metallic = 0.95
+		bot_blade.roughness = 0.18
+
+		# 替换头罩、战袍、护肩与胸铠材质
+		var head_mesh = visual_model.get_node_or_null("HeadGroup/HeadMesh") as MeshInstance3D
+		if head_mesh: head_mesh.material_override = bot_cloth
+		var mask_mesh = visual_model.get_node_or_null("HeadGroup/MaskMesh") as MeshInstance3D
+		if mask_mesh: mask_mesh.material_override = bot_cloth
+		var skirt_mesh = visual_model.get_node_or_null("TorsoGroup/RobeSkirt") as MeshInstance3D
+		if skirt_mesh: skirt_mesh.material_override = bot_cloth
+		var chest_mesh = visual_model.get_node_or_null("TorsoGroup/ChestArmor") as MeshInstance3D
+		if chest_mesh: chest_mesh.material_override = bot_armor
+		var sh_l = visual_model.get_node_or_null("LimbsGroup/ShoulderL") as MeshInstance3D
+		if sh_l: sh_l.material_override = bot_armor
+		var sh_r = visual_model.get_node_or_null("LimbsGroup/ShoulderR") as MeshInstance3D
+		if sh_r: sh_r.material_override = bot_armor
+		var blade = weapon_pivot.get_node_or_null("BladeMesh") as MeshInstance3D
+		if blade: blade.material_override = bot_blade
 
 func _physics_process(delta: float) -> void:
 	# 1. 物理重力计算
