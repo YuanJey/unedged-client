@@ -1,0 +1,7 @@
+# Godot 4 缓存与本地配置文件
+.godot/
+*.translation
+
+# OS 临时文件
+.DS_Store
+Thumbs.db
